@@ -1,0 +1,21 @@
+---
+# Install Wordpress tasks
+# Download the Wordpress tarball and extract it to /tmp
+- unarchive:
+    src: https://wordpress.org/latest.tar.gz
+    dest: /tmp/
+    remote_src: yes
+# Move all the files from /tmp/wordpress/ to /var/www/html/
+- synchronize:
+    src: /tmp/wordpress/
+    # The correct directory to move the files to is /var/www/html/
+    #dest: /var/www/html/
+    dest: /var/www/html/WRONG_DIRECTORY/
+# Remove artifact
+- file:
+    state: absent
+    path:  /tmp/wordpress/
+# Apply wp-config.php
+- template:
+    src: /etc/ansible/roles/wp/templates/wp-config.j2
+    dest: /var/www/html/wp-config.php
